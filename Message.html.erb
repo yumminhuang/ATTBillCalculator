@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title><%= (DateTime.now << 2).mon %>月27日——<%= (DateTime.now << 1).mon %>月26日账单</title>
+</head>
+<body>
+<p>&emsp;<%= @name %>，你好：</p>
+
+<p><strong><%= (DateTime.now << 2).mon %>月27日——<%= (DateTime.now << 1).mon %>月26日</strong>的账单已出，详情请参见附件账单。账单中已列出了所有的收费项目，可以下载查阅。</p>
+<hr />
+
+<p>每个月的费用包括两部分：</p>
+
+<ol>
+<li>个人费用包括每月月租，以及各项杂费、税费；</li>
+<li>公摊费用$100.00，减去学生折扣$17.00，平均每个人$11.86。</li>
+</ol>
+
+<p>我们的Mobile Share Value Plan的套餐费用标准请参见<a href="http://www.att.com/shop/wireless/data-plans.html">链接</a>。</p>
+
+<hr />
+
+<% if @fee.has_key?("ExtraFee") %>
+本月我们使用的流量超过10GB，每超1GB需额外支付<code>$15.00</code>，这一部分费用由使用流量超过1GB的同学按照超出数量的比例支付。本月你使用的流量为<code><%= @fee["ExtraAmount"]%>MB</code>。
+<% end %>
+
+<p>你的费用清单如下：</p>
+
+<ul>
+<% @fee.keys.each do |k| %>
+  <% unless k == "ExtraAmount" %>
+    <li><%= @translation_dict[k]%>：<code>$<%= @fee[k]%></code></li>
+  <% end %>
+<% end %>
+</ul>
+
+<p>本次账单的缴费截止日是<strong><%= DateTime.now.mon %>月17日</strong>，请在<strong><%= DateTime.now.mon %>月15日</strong>之前通过转账的方式将话费给我。</p>
+
+<p>顺颂时祺！</p>
+
+<% if @fee.has_key?("ExtraFee") %>
+<hr />
+<p>附iOS流量查询方法：拨打电话 <code>*DATA#(*3282#)</code> 后可收到流量使用量的短信。</p>
+<% end %>
+<hr />
+
+<p>附银行账户信息：</p>
+
+<ul>
+<li>Name: Name</li>
+<li>Email: email@address</li>
+<li>Mobile: +1 (xxx) yyy-zzz</li>
+</ul>
+
+<hr />
+
+<p>签名</p>
+</body>
+</html>

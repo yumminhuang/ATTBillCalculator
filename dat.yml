@@ -1,0 +1,36 @@
+plan:
+    public: 100.0
+    discount: 0.17
+
+contacts:
+    - name: 张三
+      phone: 123-456-7890
+      mail: zhang3@email.com
+    - name: 李四
+      phone: 123-456-7891
+      mail: li4@mail.com
+      holder: true
+    - name: 王五
+      phone: 123-456-7892
+      mail: wang5@email.com
+    - name: 赵六
+      phone: 123-456-7893
+      mail: zhao6@email.com
+
+translations:
+    PrivateFee: 个人费用
+    PublicFee: 公摊费用
+    ExtraFee: 流量超额费用
+    SumFee: 合计
+
+mail_config:
+    via: smtp
+    fromname: 李四
+    authenticate: true
+    attachment: /Users/admin/Downloads/att.pdf
+    account:
+        hostname: smtp.email.com
+        port: 587
+        username: li4@mail.com
+        password: passowrd
+        tls: true
