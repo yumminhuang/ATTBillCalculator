@@ -14,7 +14,7 @@
 
 <ol>
 <li>个人费用包括每月月租，以及各项杂费、税费；</li>
-<li>公摊费用$100.00，减去学生折扣$17.00，平均每个人$11.86。</li>
+<li>公摊费用$<%= "#{'%.02f' % @plan['public']}" %>，减去学生折扣$<%= "#{'%.02f' % (@plan['public'] * @plan['discount'])}" %>，平均每个人$<%= "#{'%.02f' % (@plan['public'] * (1 - @plan['discount']) / @contacts_count)}" %>。</li>
 </ol>
 
 <p>我们的Mobile Share Value Plan的套餐费用标准请参见<a href="http://www.att.com/shop/wireless/data-plans.html">链接</a>。</p>
@@ -22,7 +22,7 @@
 <hr />
 
 <% if @fee.has_key?("ExtraFee") %>
-本月我们使用的流量超过10GB，每超1GB需额外支付<code>$15.00</code>，这一部分费用由使用流量超过1GB的同学按照超出数量的比例支付。本月你使用的流量为<code><%= @fee["ExtraAmount"]%>MB</code>。
+本月我们使用的流量超过<%= @plan['data'] %>GB，每超1GB需额外支付<code>$15.00</code>，这一部分费用由使用流量超过<%= @plan['data'] * 1024 / @contacts_count %>MB的同学按照超出数量的比例支付。本月你使用的流量为<code><%= @fee["ExtraAmount"]%>MB</code>。
 <% end %>
 
 <p>你的费用清单如下：</p>

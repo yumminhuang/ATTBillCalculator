@@ -26,6 +26,7 @@ class Accountant
 
   def initialize(plan, contacts)
     @public_money = plan['public']
+    @data = plan['data']
     @discount = plan.include?('discount') ? @public_money * plan['discount'] : 0
     @holder_name = contacts.select{|c| c.include?('holder')}.pop.fetch('name')
     @names = Array.new
@@ -50,7 +51,7 @@ class Accountant
     extra_fee = 15.0 * gets.chomp.to_i
     # Extra data amount for each person
     extras_amount = @names.each_with_object({}) do |name, extras|
-      print "#{name}本月使用MB(未超额按N/n):"
+      print "#{name}本月使用MB(未超过 #{@data * 1024 / @names.size }MB 按N/n):"
       amount = gets.chomp
       extras[name] = amount.to_f unless ['N', 'n'].include?(amount)
     end
@@ -70,9 +71,10 @@ class Accountant
   end
 
   def account_for_extra(fees, extra_fee, extras)
-    all_extra_amount = extras.values.reduce(:+) - 1024 * extras.values.size
+    limit_per_member = @data * 1024 / @names.size
+    all_extra_amount = extras.values.reduce(:+) - limit_per_member * extras.values.size
     extras.each do |name, amount|
-      tmp = extra_fee * (amount - 1024) / all_extra_amount
+      tmp = extra_fee * (amount - limit_per_member) / all_extra_amount
       fees[name][2] += tmp
       fees[name][3] += amount
     end
@@ -82,7 +84,7 @@ class Accountant
   def account
     fee_input = get_input
     puts "合计:#{fee_input.values.reduce(:+).round(2)}"
-    print '本月流量超额(y/n)?'
+    print "本月流量超过 #{@data}GB (y/n)?"
     has_extra = ['Y', 'y'].include? gets.chomp
     if has_extra
       extra_fee, extras = get_input_for_extra
@@ -113,6 +115,8 @@ class MessageRender
   def initialize(name, fee)
     data = YAML.load_file('dat.yml')
     @translation_dict = data['translations']
+    @plan = data['plan']
+    @contacts_count = data['contacts'].size
     @name = name
     @fee = fee
     @template = File.new('Message.html.erb').read
