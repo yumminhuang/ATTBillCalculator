@@ -1,6 +1,7 @@
 plan:
     public: 100.0
     discount: 0.17
+    data: 10
 
 contacts:
     - name: 张三
