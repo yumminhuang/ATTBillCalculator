@@ -8,4 +8,9 @@ cache: bundler
 
 sudo: false
 
+branches:
+  only:
+    - master
+    - /^feature.*$/
+
 script: bundle exec rake test
