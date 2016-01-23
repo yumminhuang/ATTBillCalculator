@@ -22,7 +22,7 @@ class MailSender
     mail_opts.merge!(authed_options) if @config['authenticate']
     unless @dry
       mail_opts[:attachments] =
-      {"AT&T_Bill.pdf" => File.read(@config['attachment'])}
+        {"AT&T_Bill.pdf" => File.read(@config['attachment'])}
     end
     return mail_opts
   end
@@ -59,25 +59,25 @@ class MailSender
   end
 
   def mail_options
-  {
-    :subject => "【手机费】#{(DateTime.now << 1).mon}月账单",
-    :from => "#{@config['fromname']} <#{@config['account']['username']}>",
-    :via => @config['via'],
-    :charset => 'UTF-8',
-    :text_part_charset => 'UTF-8',
-    :sender => @config['account']['username'],
-  }
+    {
+      :subject => "【手机费】#{(DateTime.now << 1).mon}月账单",
+      :from => "#{@config['fromname']} <#{@config['account']['username']}>",
+      :via => @config['via'],
+      :charset => 'UTF-8',
+      :text_part_charset => 'UTF-8',
+      :sender => @config['account']['username'],
+    }
   end
 
   def authed_options
-  {
-    via_options: {
-      :address => @config['account']['hostname'],
-      :port => @config['account']['port'],
-      :enable_starttls_auto => @config['account']['tls'],
-      :user_name => @config['account']['username'],
-      :password => @config['account']['password'],
-      :authentication => :plain
+    {
+      via_options: {
+        :address => @config['account']['hostname'],
+        :port => @config['account']['port'],
+        :enable_starttls_auto => @config['account']['tls'],
+        :user_name => @config['account']['username'],
+        :password => @config['account']['password'],
+        :authentication => :plain
       }
     }
   end
